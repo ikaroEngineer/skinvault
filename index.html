@@ -991,7 +991,7 @@ const SKIN_STEAM_IMGS = {
 function skinImg(name, skin, c, w=80) {
   const key = `${name}|${skin}`;
   if (SKIN_STEAM_IMGS[key]) {
-    return `<img src="${SKIN_STEAM_IMGS[key]}" alt="${name} ${skin}" loading="lazy" style="max-width:90%;max-height:90%;object-fit:contain;" onerror="this.outerHTML='${skinSVG(c,w).replace(/'/g,"\\'")}'">`; 
+    return `<img src="${SKIN_STEAM_IMGS[key]}" alt="${name} ${skin}" loading="lazy" style="max-width:90%;max-height:90%;object-fit:contain;" onerror="this.style.display='none'">`;
   }
   return skinSVG(c, w);
 }
