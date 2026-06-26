@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkinVault — CS2 Marketplace</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+:root {
+  --bg: #0d0d14;
+  --bg2: #13132a;
+  --bg3: #16162a;
+  --border: #2a2a40;
+  --border2: #1a1a2c;
+  --text: #e8e8f0;
+  --text2: #8888aa;
+  --text3: #556677;
+  --purple: #7c5ff5;
+  --purple-dark: #2a1f5a;
+  --purple-light: #c4b0ff;
+  --green: #4caf78;
+  --red: #c94040;
+  --gold: #c9a040;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
+a { text-decoration: none; color: inherit; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #2a2a44; border-radius: 3px; }
+
+/* ── NAV ── */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem; height: 58px;
+  background: rgba(13,13,20,0.95); backdrop-filter: blur(8px);
+  border-bottom: 0.5px solid var(--border);
+}
+.nav-logo { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.nav-logo-icon { width: 32px; height: 32px; background: var(--purple-dark); border-radius: 7px; display: flex; align-items: center; justify-content: center; }
+.nav-logo-icon img { width: 24px; height: 24px; object-fit: contain; }
+.nav-wordmark { font-size: 20px; font-weight: 600; letter-spacing: -0.5px; }
+.nav-wordmark em { font-style: normal; color: var(--purple); }
+.nav-links { display: flex; gap: 2rem; }
+.nav-links a { font-size: 13px; color: var(--text2); cursor: pointer; transition: color .15s; }
+.nav-links a:hover, .nav-links a.active { color: var(--text); }
+.nav-right { display: flex; align-items: center; gap: 12px; }
+.nav-balance { font-size: 13px; color: var(--purple); font-weight: 500; display: flex; align-items: center; gap: 5px; }
+.btn-steam { background: var(--bg2); border: 0.5px solid #3a3a5c; color: var(--text); font-size: 13px; padding: 7px 14px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 7px; transition: background .15s; }
+.btn-steam:hover { background: #1e1e38; }
+.nav-hamburger { display: none; background: none; border: none; color: var(--text); font-size: 22px; cursor: pointer; }
+.nav-mobile-menu { display: none; flex-direction: column; background: var(--bg2); border-bottom: 0.5px solid var(--border); padding: .75rem 1.5rem; }
+.nav-mobile-menu a { font-size: 14px; color: var(--text2); padding: 10px 0; border-bottom: 0.5px solid var(--border2); display: block; cursor: pointer; }
+.nav-mobile-menu a:last-child { border-bottom: none; }
+.nav-mobile-menu a.active { color: var(--purple-light); }
+
+/* ── PAGES ── */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ── HOME ── */
+.hero { padding: 2.5rem 2rem 1.5rem; border-bottom: 0.5px solid var(--border2); }
+.hero-inner { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+.hero-title { font-size: 26px; font-weight: 600; letter-spacing: -0.5px; }
+.hero-title em { font-style: normal; color: var(--purple); }
+.hero-sub { font-size: 13px; color: var(--text3); margin-top: 5px; }
+.hero-stats { display: flex; gap: 2rem; flex-shrink: 0; }
+.stat { text-align: right; }
+.stat-num { font-size: 22px; font-weight: 600; }
+.stat-label { font-size: 11px; color: var(--text3); margin-top: 1px; }
+.tabs { display: flex; padding: 0 2rem; border-bottom: 0.5px solid var(--border2); overflow-x: auto; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab { font-size: 13px; padding: 10px 16px; cursor: pointer; color: #667788; border-bottom: 2px solid transparent; white-space: nowrap; transition: all .15s; }
+.tab.active { color: var(--purple-light); border-bottom-color: var(--purple); }
+.filters { display: flex; align-items: center; gap: 8px; padding: .75rem 2rem; border-bottom: 0.5px solid var(--border2); flex-wrap: wrap; }
+.search-wrap { position: relative; flex: 1; min-width: 160px; }
+.search-wrap i { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text3); font-size: 15px; }
+.search-wrap input { width: 100%; background: var(--bg3); border: 0.5px solid var(--border); color: var(--text); font-size: 13px; padding: 8px 10px 8px 32px; border-radius: 8px; outline: none; }
+.search-wrap input::placeholder { color: #445566; }
+.search-wrap input:focus { border-color: var(--purple); }
+.chip { background: var(--bg3); border: 0.5px solid var(--border); color: var(--text2); font-size: 12px; padding: 6px 12px; border-radius: 20px; cursor: pointer; white-space: nowrap; transition: all .15s; }
+.chip.active { background: #1e1440; border-color: var(--purple); color: var(--purple-light); }
+.chip:hover { border-color: #4a4a70; }
+.sort-sel { background: var(--bg3); border: 0.5px solid var(--border); color: var(--text2); font-size: 12px; padding: 6px 10px; border-radius: 8px; cursor: pointer; margin-left: auto; }
+.skin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1px; background: var(--border2); }
+.skin-card { background: var(--bg); padding: 1rem; cursor: pointer; transition: background .15s; position: relative; }
+.skin-card:hover { background: #0f0f20; }
+.skin-img { width: 100%; aspect-ratio: 4/3; background: #1a1a30; border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; overflow: hidden; }
+.skin-img img { max-width: 90%; max-height: 90%; object-fit: contain; }
+.skin-img svg { width: 85%; }
+.skin-name { font-size: 11px; color: var(--text2); }
+.skin-skin { font-size: 13px; font-weight: 500; color: #d8d8f0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 6px; }
+.skin-row { display: flex; align-items: center; justify-content: space-between; }
+.skin-price { font-size: 15px; font-weight: 600; }
+.wear { font-size: 10px; padding: 2px 6px; border-radius: 4px; }
+.w-fn { background: #0a2a1e; color: var(--green); }
+.w-mw { background: #1a2e3a; color: #4a9fd5; }
+.w-ft { background: #2e2a1a; color: var(--gold); }
+.w-ww { background: #2e1e1a; color: #c97040; }
+.card-badge { position: absolute; top: 8px; right: 8px; background: var(--purple-dark); border: 0.5px solid var(--purple); color: var(--purple-light); font-size: 10px; padding: 2px 7px; border-radius: 4px; }
+.stat-tag { font-size: 10px; color: var(--gold); }
+.grid-footer { text-align: center; padding: 2rem; color: var(--text3); font-size: 13px; border-top: 0.5px solid var(--border2); }
+
+/* ── SELL PAGE ── */
+.sell-body { display: grid; grid-template-columns: 1fr 320px; min-height: calc(100vh - 58px); }
+.sell-inv { padding: 1.5rem 2rem; border-right: 0.5px solid var(--border2); }
+.sell-panel { padding: 1.5rem; background: #0b0b18; }
+.panel-title { font-size: 14px; font-weight: 500; margin-bottom: 1rem; }
+.inv-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+.inv-title { font-size: 14px; font-weight: 500; }
+.inv-sub { font-size: 12px; color: var(--text3); margin-top: 2px; }
+.badge-count { background: var(--purple-dark); color: var(--purple-light); font-size: 11px; padding: 2px 8px; border-radius: 10px; margin-left: 6px; }
+.inv-filters { display: flex; gap: 8px; margin-bottom: 1rem; }
+.inv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
+.inv-item { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 8px; padding: 10px; cursor: pointer; transition: border-color .15s; position: relative; }
+.inv-item:hover { border-color: #4a3a7a; }
+.inv-item.sel { border-color: var(--purple); background: #1a1440; }
+.inv-check { position: absolute; top: 6px; right: 6px; width: 18px; height: 18px; border-radius: 50%; border: 0.5px solid #3a3a5c; background: var(--bg3); display: flex; align-items: center; justify-content: center; font-size: 10px; }
+.inv-item.sel .inv-check { background: var(--purple); border-color: var(--purple); color: #fff; }
+.inv-img { height: 55px; background: #1a1a35; border-radius: 5px; display: flex; align-items: center; justify-content: center; margin-bottom: 6px; }
+.inv-item-name { font-size: 10px; color: var(--text3); }
+.inv-item-skin { font-size: 12px; font-weight: 500; color: #d8d8f0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.inv-item-row { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; }
+.inv-price { font-size: 12px; }
+.empty-panel { background: #13132a; border: 0.5px dashed var(--border); border-radius: 10px; padding: 2rem 1rem; text-align: center; color: var(--text3); font-size: 13px; margin-bottom: 1rem; }
+.sel-list { margin-bottom: 1rem; }
+.sel-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 0.5px solid var(--border2); }
+.sel-item:last-child { border-bottom: none; }
+.sel-img { width: 38px; height: 28px; background: #1a1a35; border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.sel-info { flex: 1; min-width: 0; }
+.sel-n { font-size: 10px; color: var(--text3); }
+.sel-s { font-size: 12px; font-weight: 500; color: #d8d8f0; }
+.sel-p-col { text-align: right; flex-shrink: 0; }
+.sel-p { font-size: 13px; font-weight: 500; }
+.sel-you { font-size: 10px; color: var(--green); }
+.btn-remove { background: none; border: none; color: #445566; cursor: pointer; font-size: 16px; }
+.btn-remove:hover { color: var(--red); }
+.divider { height: 0.5px; background: var(--border2); margin: 1rem 0; }
+.sum-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
+.sum-label { color: var(--text2); }
+.sum-row.total .sum-label { color: var(--text); font-weight: 500; font-size: 14px; }
+.sum-row.total .sum-val { color: var(--green); font-weight: 600; font-size: 16px; }
+.info-box { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 8px; padding: 10px 12px; font-size: 12px; color: #667799; margin-bottom: 1rem; display: flex; gap: 8px; }
+.btn-primary { width: 100%; background: var(--purple); border: none; color: #fff; font-size: 14px; font-weight: 500; padding: 13px; border-radius: 9px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px; transition: background .15s; }
+.btn-primary:hover { background: #6a4fe0; }
+.btn-primary:disabled { background: #2a2a44; color: var(--text3); cursor: not-allowed; }
+.trade-url-section { margin-top: 1rem; }
+.trade-url-label { font-size: 12px; color: var(--text3); margin-bottom: 5px; }
+.trade-url-input { width: 100%; background: var(--bg3); border: 0.5px solid var(--border); color: var(--text2); font-size: 11px; padding: 8px 10px; border-radius: 7px; font-family: monospace; }
+.trade-url-hint { font-size: 11px; color: #3a4a5a; margin-top: 4px; }
+
+/* ── CHECKOUT ── */
+.checkout-body { display: grid; grid-template-columns: 1fr 340px; min-height: calc(100vh - 58px); }
+.checkout-left { padding: 2rem; border-right: 0.5px solid var(--border2); }
+.checkout-right { padding: 2rem; background: #0b0b18; }
+.section-num { width: 22px; height: 22px; border-radius: 50%; background: var(--purple); color: #fff; font-size: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.section-num.done { background: #1a3a1a; color: var(--green); }
+.section-title { font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 8px; margin-bottom: 1rem; }
+.method-row { display: flex; gap: 8px; margin-bottom: 1.25rem; }
+.method { flex: 1; background: var(--bg3); border: 0.5px solid var(--border); border-radius: 8px; padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text2); transition: all .15s; }
+.method.active { background: #1e1440; border-color: var(--purple); color: var(--purple-light); }
+.field { margin-bottom: 1rem; }
+.field label { font-size: 12px; color: var(--text3); display: block; margin-bottom: 5px; }
+.field input { width: 100%; background: var(--bg3); border: 0.5px solid var(--border); color: var(--text); font-size: 13px; padding: 9px 12px; border-radius: 8px; outline: none; }
+.field input:focus { border-color: var(--purple); }
+.field input::placeholder { color: #445566; }
+.input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.card-preview { background: linear-gradient(135deg, #2a1f5a, #1a1040); border-radius: 10px; padding: 1.25rem; margin-bottom: 1.25rem; position: relative; overflow: hidden; }
+.card-chip { width: 32px; height: 24px; background: var(--gold); border-radius: 4px; margin-bottom: 1rem; }
+.card-num-display { font-size: 15px; font-family: monospace; letter-spacing: 2px; margin-bottom: .75rem; }
+.card-row { display: flex; justify-content: space-between; font-size: 11px; color: var(--text2); }
+.pix-box { background: var(--bg3); border: 0.5px solid var(--border); border-radius: 10px; padding: 1.5rem; text-align: center; }
+.pix-qr { width: 110px; height: 110px; background: #fff; border-radius: 8px; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; }
+.pix-key { background: #1a1a30; border: 0.5px solid var(--border); border-radius: 6px; padding: 8px 12px; font-size: 11px; font-family: monospace; color: var(--text2); margin-bottom: 1rem; word-break: break-all; }
+.order-card { background: var(--bg3); border: 0.5px solid var(--border); border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1rem; }
+.order-item { display: flex; align-items: center; gap: 10px; }
+.order-img { width: 48px; height: 36px; background: #1a1a35; border-radius: 5px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.order-info { flex: 1; }
+.order-name { font-size: 11px; color: var(--text2); }
+.order-skin { font-size: 13px; font-weight: 500; }
+.order-price { font-size: 15px; font-weight: 600; }
+
+/* ── MEUS DADOS ── */
+.dados-body { padding: 1.5rem 2rem; max-width: 680px; }
+.profile-card { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 10px; padding: 1rem 1.25rem; display: flex; align-items: center; gap: 12px; margin-bottom: 1.25rem; }
+.avatar { width: 46px; height: 46px; border-radius: 50%; background: var(--purple-dark); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 500; color: var(--purple-light); flex-shrink: 0; }
+.verified-badge { font-size: 11px; background: #0a2a1e; color: var(--green); border: 0.5px solid #1a4a3a; padding: 2px 8px; border-radius: 4px; margin-left: auto; display: flex; align-items: center; gap: 4px; }
+.sec-title { font-size: 11px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: .75rem; margin-top: 1.25rem; }
+.data-card { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 1.25rem; }
+.data-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 1rem; border-bottom: 0.5px solid var(--border2); }
+.data-row:last-child { border-bottom: none; }
+.data-label { font-size: 12px; color: var(--text3); display: flex; align-items: center; gap: 7px; }
+.data-val { font-size: 13px; color: #d8d8f0; }
+.btn-edit { font-size: 11px; background: #1a1a30; border: 0.5px solid var(--border); color: var(--text2); padding: 3px 10px; border-radius: 5px; cursor: pointer; margin-left: 8px; }
+.btn-edit:hover { border-color: var(--purple); color: var(--purple-light); }
+.rights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1.25rem; }
+.right-card { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 10px; padding: .875rem 1rem; cursor: pointer; transition: border-color .15s; }
+.right-card:hover { border-color: #4a3a7a; }
+.right-card i { font-size: 20px; color: var(--purple); display: block; margin-bottom: 6px; }
+.right-title { font-size: 13px; font-weight: 500; color: #d8d8f0; margin-bottom: 3px; }
+.right-desc { font-size: 11px; color: var(--text3); line-height: 1.4; }
+.btn-export { width: 100%; background: #1e1440; border: 0.5px solid var(--purple); color: var(--purple-light); font-size: 13px; font-weight: 500; padding: 11px; border-radius: 9px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 1.25rem; transition: background .15s; }
+.btn-export:hover { background: var(--purple-dark); }
+.danger-card { background: #1a0d0d; border: 0.5px solid #3a1a1a; border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
+.danger-title { font-size: 13px; font-weight: 500; color: #e87070; margin-bottom: 4px; display: flex; align-items: center; gap: 7px; }
+.danger-desc { font-size: 12px; color: #7a4040; margin-bottom: .75rem; line-height: 1.5; }
+.btn-danger { background: transparent; border: 0.5px solid var(--red); color: var(--red); font-size: 12px; padding: 8px 14px; border-radius: 7px; cursor: pointer; width: 100%; transition: background .15s; }
+.btn-danger:hover { background: #2a1010; }
+.lgpd-box { background: #0f0f20; border: 0.5px solid var(--border); border-radius: 8px; padding: 10px 12px; font-size: 12px; color: var(--text3); display: flex; gap: 8px; margin-bottom: 1.25rem; line-height: 1.5; }
+
+/* ── COOKIE BANNER ── */
+.cookie-banner { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg2); border-top: 0.5px solid #3a3a5c; padding: 1.25rem 2rem; z-index: 999; display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+.cookie-text { flex: 1; min-width: 200px; font-size: 13px; color: var(--text2); }
+.cookie-text a { color: var(--purple); cursor: pointer; }
+.cookie-btns { display: flex; gap: 8px; flex-shrink: 0; }
+.btn-cookie-accept { background: var(--purple); border: none; color: #fff; font-size: 13px; font-weight: 500; padding: 8px 18px; border-radius: 8px; cursor: pointer; }
+.btn-cookie-refuse { background: var(--bg3); border: 0.5px solid var(--border); color: var(--text2); font-size: 13px; padding: 8px 18px; border-radius: 8px; cursor: pointer; }
+.btn-cookie-custom { background: transparent; border: 0.5px solid var(--border); color: var(--text2); font-size: 13px; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
+.cookie-manage { position: fixed; bottom: 1rem; left: 1rem; background: var(--bg2); border: 0.5px solid var(--border); color: var(--text3); font-size: 11px; padding: 5px 12px; border-radius: 7px; cursor: pointer; z-index: 500; display: none; }
+.cookie-manage:hover { color: var(--purple); border-color: var(--purple); }
+
+/* ── MODAL ── */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 1rem; }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--bg2); border: 0.5px solid #3a3a5c; border-radius: 12px; padding: 1.25rem; width: 100%; max-width: 400px; }
+.modal-title { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+.modal-desc { font-size: 13px; color: var(--text2); margin-bottom: 1rem; line-height: 1.5; }
+.modal-input { width: 100%; background: var(--bg3); border: 0.5px solid var(--border); color: var(--text); font-size: 13px; padding: 9px 12px; border-radius: 8px; outline: none; margin-bottom: 1rem; }
+.modal-input:focus { border-color: var(--purple); }
+.modal-input::placeholder { color: #445566; }
+.modal-btns { display: flex; gap: 8px; }
+.btn-modal-cancel { flex: 1; background: #1a1a2e; border: 0.5px solid #3a3a5c; color: var(--text2); font-size: 13px; padding: 9px; border-radius: 8px; cursor: pointer; }
+.btn-modal-confirm { flex: 1; background: var(--purple); border: none; color: #fff; font-size: 13px; font-weight: 500; padding: 9px; border-radius: 8px; cursor: pointer; }
+.btn-modal-confirm.danger { background: var(--red); }
+.toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 0.5px solid var(--border2); }
+.toggle-row:last-of-type { border-bottom: none; }
+.toggle-info { flex: 1; }
+.toggle-name { font-size: 13px; color: #d8d8f0; font-weight: 500; }
+.toggle-desc { font-size: 11px; color: var(--text3); margin-top: 2px; }
+.toggle { position: relative; width: 36px; height: 20px; flex-shrink: 0; margin-left: 12px; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.t-slider { position: absolute; inset: 0; background: #2a2a44; border-radius: 20px; cursor: pointer; transition: background .2s; }
+.t-slider:before { content: ''; position: absolute; left: 3px; top: 3px; width: 14px; height: 14px; background: var(--text3); border-radius: 50%; transition: all .2s; }
+.toggle input:checked + .t-slider { background: var(--purple); }
+.toggle input:checked + .t-slider:before { transform: translateX(16px); background: #fff; }
+.toggle input:disabled + .t-slider { opacity: 0.5; cursor: not-allowed; }
+
+/* ── TOAST ── */
+.quick-reply-btn { background:var(--bg3); border:0.5px solid var(--border); color:var(--text2); font-size:11px; padding:5px 10px; border-radius:20px; cursor:pointer; transition:all .15s; white-space:nowrap; }
+.quick-reply-btn:hover { border-color:var(--purple); color:var(--purple-light); background:var(--purple-dark); }
+.msg-user { display:flex; justify-content:flex-end; }
+.msg-user-bubble { background:var(--purple); border-radius:12px 12px 0 12px; padding:10px 12px; font-size:13px; color:#fff; max-width:220px; line-height:1.5; }
+.msg-bot { display:flex; gap:8px; align-items:flex-end; }
+.msg-bot-bubble { background:#1e1440; border:0.5px solid #3a2a6a; border-radius:12px 12px 12px 0; padding:10px 12px; font-size:13px; color:var(--text); max-width:220px; line-height:1.5; }
+.msg-time { font-size:10px; color:var(--text3); margin-top:3px; margin-left:4px; }
+@keyframes slideUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+@keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:.4} }
+.dot-pulse { width:7px; height:7px; background:var(--purple); border-radius:50%; display:inline-block; animation:dot-pulse 1s infinite; }
+@keyframes dot-pulse { 0%,100%{opacity:.3;transform:scale(.8)} 50%{opacity:1;transform:scale(1)} }
+.toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: #1a3a1a; border: 0.5px solid #2a6a2a; color: var(--green); font-size: 13px; padding: 10px 18px; border-radius: 8px; display: none; align-items: center; gap: 8px; white-space: nowrap; z-index: 2000; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+.toast.show { display: flex; }
+.toast.danger { background: #2a1010; border-color: #4a2a2a; color: #e87070; }
+
+/* ── BOTTOM NAV (mobile) ── */
+.bottom-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg2); border-top: 0.5px solid var(--border); padding: 8px 0 4px; z-index: 100; }
+.bottom-nav-inner { display: flex; justify-content: space-around; }
+.bnav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 10px; color: var(--text3); cursor: pointer; padding: 4px 12px; }
+.bnav-item.active { color: var(--purple-light); }
+.bnav-item i { font-size: 22px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .nav-links, .btn-steam { display: none !important; }
+  .nav-hamburger { display: block; }
+  .hero-stats { display: none; }
+  .hero-title { font-size: 20px; }
+  .sell-body { grid-template-columns: 1fr; }
+  .sell-panel { border-top: 0.5px solid var(--border2); }
+  .checkout-body { grid-template-columns: 1fr; }
+  .checkout-right { border-top: 0.5px solid var(--border2); }
+  .skin-grid { grid-template-columns: repeat(2, 1fr); }
+  .rights-grid { grid-template-columns: 1fr 1fr; }
+  .bottom-nav { display: block; }
+  .filters { padding: .75rem 1rem; }
+  .hero { padding: 1.5rem 1rem 1rem; }
+  .tabs { padding: 0 1rem; }
+  .nav { padding: 0 1rem; }
+  .dados-body { padding: 1rem; }
+  .sell-inv { padding: 1rem; }
+  .sell-panel { padding: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════ NAV ══════════ -->
+<nav class="nav">
+  <div class="nav-logo" onclick="goPage('home')">
+    <div class="nav-logo-icon">
+      <i class="ti ti-shield" style="font-size:15px;color:#c4b0ff;"></i>
+    </div>
+    <span class="nav-wordmark">Skin<em>Vault</em></span>
+  </div>
+  <div class="nav-links">
+    <a class="active" onclick="goPage('home')">Comprar</a>
+    <a onclick="goPage('sell')">Vender</a>
+    <a onclick="goPage('dados')">Meus Dados</a>
+    <a onclick="abrirPainelAfiliados()">🤝 Afiliados</a>
+    <a onclick="alert('Em breve!')">Como funciona</a>
+  </div>
+  <div class="nav-right">
+    <span class="nav-balance"><i class="ti ti-wallet" style="font-size:15px;"></i>$92.00</span>
+    <button class="btn-steam">
+      <i class="ti ti-brand-steam" style="font-size:16px;"></i>
+      Entrar com Steam
+    </button>
+    <button class="nav-hamburger" onclick="toggleMenu()">
+      <i class="ti ti-menu-2"></i>
+    </button>
+  </div>
+</nav>
+<div class="nav-mobile-menu" id="mobile-menu">
+  <a class="active" onclick="goPage('home');toggleMenu()">Comprar</a>
+  <a onclick="goPage('sell');toggleMenu()">Vender</a>
+  <a onclick="goPage('dados');toggleMenu()">Meus Dados</a>
+  <a onclick="abrirPainelAfiliados();toggleMenu()">🤝 Afiliados</a>
+  <a onclick="alert('Em breve!');toggleMenu()">Como funciona</a>
+</div>
+
+<!-- ══════════ PAGE: HOME ══════════ -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-title">Compre e venda skins de <em>CS2</em></div>
+        <div class="hero-sub">Preços reais em dólar · Transferência instantânea · Sem enrolação</div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-num">14,832</div><div class="stat-label">skins disponíveis</div></div>
+        <div class="stat"><div class="stat-num">$2.1M</div><div class="stat-label">volume hoje</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="tabs" id="tabs">
+    <div class="tab active" onclick="setTab(this,'all')">Todos</div>
+    <div class="tab" onclick="setTab(this,'rifle')">Rifles</div>
+    <div class="tab" onclick="setTab(this,'pistol')">Pistolas</div>
+    <div class="tab" onclick="setTab(this,'knife')">Facas</div>
+    <div class="tab" onclick="setTab(this,'glove')">Luvas</div>
+    <div class="tab" onclick="setTab(this,'smg')">SMGs</div>
+  </div>
+  <div class="filters">
+    <div class="search-wrap">
+      <i class="ti ti-search"></i>
+      <input type="text" placeholder="Buscar skin, coleção..." id="skin-search" oninput="renderSkins()">
+    </div>
+    <div class="chip active" onclick="toggleChip(this,'all')">Todos</div>
+    <div class="chip" onclick="toggleChip(this,'fn')">Factory New</div>
+    <div class="chip" onclick="toggleChip(this,'mw')">Minimal Wear</div>
+    <div class="chip" onclick="toggleChip(this,'ft')">Field-Tested</div>
+    <div class="chip" onclick="toggleChip(this,'stat')"><i class="ti ti-star" style="font-size:11px;"></i> StatTrak</div>
+    <select class="sort-sel" onchange="sortMode=this.value;renderSkins()">
+      <option value="price-asc">Menor preço</option>
+      <option value="price-desc">Maior preço</option>
+      <option value="float-asc">Melhor float</option>
+      <option value="name">Nome A-Z</option>
+    </select>
+  </div>
+  <div class="skin-grid" id="skin-grid"></div>
+  <div class="grid-footer" id="grid-footer"></div>
+</div>
+
+<!-- ══════════ PAGE: SELL ══════════ -->
+<div class="page" id="page-sell">
+  <div class="sell-body">
+    <div class="sell-inv">
+      <div class="inv-header">
+        <div>
+          <div class="inv-title">Seu inventário Steam <span class="badge-count" id="inv-count-badge">8 itens</span></div>
+          <div class="inv-sub">Selecione as skins que deseja listar</div>
+        </div>
+        <button style="background:var(--bg3);border:0.5px solid var(--border);color:var(--text2);font-size:12px;padding:6px 12px;border-radius:7px;cursor:pointer;display:flex;align-items:center;gap:5px;">
+          <i class="ti ti-refresh" style="font-size:14px;"></i> Atualizar
+        </button>
+      </div>
+      <div class="inv-filters">
+        <div class="search-wrap" style="flex:1;">
+          <i class="ti ti-search"></i>
+          <input type="text" placeholder="Filtrar..." id="inv-search" oninput="renderInv()">
+        </div>
+        <select class="sort-sel" onchange="renderInv()">
+          <option value="price-desc">Maior valor</option>
+          <option value="price-asc">Menor valor</option>
+        </select>
+      </div>
+      <div class="inv-grid" id="inv-grid"></div>
+    </div>
+    <div class="sell-panel">
+      <div class="panel-title">Resumo da venda</div>
+      <div id="sell-empty" class="empty-panel">
+        <i class="ti ti-hand-click" style="font-size:28px;display:block;margin-bottom:8px;color:var(--border);"></i>
+        Selecione itens do inventário
+      </div>
+      <div id="sell-sel-list" class="sel-list" style="display:none;"></div>
+      <div id="sell-summary" style="display:none;">
+        <div class="divider"></div>
+        <div class="sum-row"><span class="sum-label">Valor de mercado</span><span id="s-market"></span></div>
+        <div class="sum-row"><span class="sum-label">Taxa SkinVault (5%)</span><span id="s-fee" style="color:var(--red);"></span></div>
+        <div class="sum-row total"><span class="sum-label">Você recebe</span><span id="s-you" class="sum-val"></span></div>
+        <div class="divider"></div>
+      </div>
+      <div class="info-box">
+        <i class="ti ti-info-circle" style="font-size:16px;color:var(--purple);flex-shrink:0;"></i>
+        <span>Quando alguém comprar, a skin é transferida via Steam Trade automaticamente. Você recebe o saldo em até 5 minutos.</span>
+      </div>
+      <button class="btn-primary" id="sell-btn" disabled onclick="goPage('checkout')">
+        <i class="ti ti-tag" style="font-size:16px;"></i>
+        <span id="sell-btn-text">Selecione itens para listar</span>
+      </button>
+      <div class="trade-url-section">
+        <div class="trade-url-label"><i class="ti ti-link" style="font-size:14px;vertical-align:-2px;margin-right:4px;"></i>URL de trade Steam</div>
+        <input class="trade-url-input" type="text" placeholder="https://steamcommunity.com/tradeoffer/new/...">
+        <div class="trade-url-hint">Steam → Perfil → Inventário → Trade Offers → Criar link</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ PAGE: CHECKOUT ══════════ -->
+<div class="page" id="page-checkout">
+  <div class="checkout-body">
+    <div class="checkout-left">
+      <div class="section-title"><span class="section-num done"><i class="ti ti-check" style="font-size:12px;"></i></span>Skin selecionada</div>
+      <div class="divider"></div>
+      <div class="section-title"><span class="section-num">2</span>Método de pagamento</div>
+      <div class="method-row">
+        <div class="method active" onclick="setMethod('card',this)"><i class="ti ti-credit-card" style="font-size:18px;"></i> Cartão</div>
+        <div class="method" onclick="setMethod('pix',this)"><i class="ti ti-qrcode" style="font-size:18px;"></i> Pix</div>
+        <div class="method" onclick="setMethod('crypto',this)"><i class="ti ti-currency-bitcoin" style="font-size:18px;"></i> Crypto</div>
+      </div>
+      <div id="method-card">
+        <div class="card-preview">
+          <div class="card-chip"></div>
+          <div class="card-num-display" id="card-display">•••• •••• •••• ••••</div>
+          <div class="card-row">
+            <div><div style="font-size:10px;color:#667788;margin-bottom:2px;">TITULAR</div><div style="font-size:12px;" id="name-display">SEU NOME</div></div>
+            <div style="text-align:right;"><div style="font-size:10px;color:#667788;margin-bottom:2px;">VALIDADE</div><div style="font-size:12px;" id="exp-display">MM/AA</div></div>
+          </div>
+        </div>
+        <div class="field"><label>Número do cartão</label><input type="text" placeholder="0000 0000 0000 0000" maxlength="19" oninput="fmtCard(this)"></div>
+        <div class="field"><label>Nome no cartão</label><input type="text" placeholder="Como aparece no cartão" oninput="document.getElementById('name-display').textContent=this.value.toUpperCase()||'SEU NOME'"></div>
+        <div class="input-row">
+          <div class="field"><label>Validade</label><input type="text" placeholder="MM/AA" maxlength="5" oninput="fmtExp(this)"></div>
+          <div class="field"><label>CVV</label><input type="text" placeholder="•••" maxlength="4"></div>
+        </div>
+      </div>
+      <div id="method-pix" style="display:none;">
+        <div class="pix-box">
+          <div style="font-size:13px;color:var(--text2);margin-bottom:1rem;">Escaneie o QR Code ou copie a chave Pix</div>
+          <div class="pix-qr">
+            <svg width="90" height="90" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
+              <rect width="90" height="90" fill="white"/>
+              <g fill="#0d0d14">
+                <rect x="5" y="5" width="28" height="28"/><rect x="8" y="8" width="22" height="22" fill="white"/><rect x="11" y="11" width="16" height="16"/>
+                <rect x="57" y="5" width="28" height="28"/><rect x="60" y="8" width="22" height="22" fill="white"/><rect x="63" y="11" width="16" height="16"/>
+                <rect x="5" y="57" width="28" height="28"/><rect x="8" y="60" width="22" height="22" fill="white"/><rect x="11" y="63" width="16" height="16"/>
+                <rect x="39" y="5" width="6" height="6"/><rect x="47" y="5" width="6" height="6"/>
+                <rect x="39" y="13" width="6" height="6"/><rect x="39" y="21" width="6" height="6"/>
+                <rect x="39" y="39" width="6" height="6"/><rect x="47" y="39" width="6" height="6"/>
+                <rect x="55" y="39" width="6" height="6"/><rect x="63" y="39" width="6" height="6"/>
+                <rect x="71" y="39" width="6" height="6"/><rect x="79" y="39" width="6" height="6"/>
+                <rect x="39" y="47" width="6" height="6"/><rect x="55" y="47" width="6" height="6"/>
+                <rect x="39" y="55" width="6" height="6"/><rect x="47" y="55" width="6" height="6"/>
+                <rect x="63" y="55" width="6" height="6"/><rect x="79" y="55" width="6" height="6"/>
+                <rect x="39" y="63" width="6" height="6"/><rect x="55" y="63" width="6" height="6"/>
+                <rect x="39" y="71" width="6" height="6"/><rect x="47" y="71" width="6" height="6"/>
+                <rect x="55" y="71" width="6" height="6"/><rect x="71" y="71" width="6" height="6"/>
+                <rect x="79" y="71" width="6" height="6"/>
+              </g>
+            </svg>
+          </div>
+          <div class="pix-key">00020126580014br.gov.bcb.pix0136skinvault@pagamento.com</div>
+          <button onclick="copyPix()" style="background:var(--purple-dark);border:0.5px solid var(--purple);color:var(--purple-light);font-size:13px;padding:8px 20px;border-radius:7px;cursor:pointer;margin-bottom:1rem;display:flex;align-items:center;gap:6px;margin:0 auto 1rem;">
+            <i class="ti ti-copy" style="font-size:15px;"></i>
+            <span id="pix-copy-text">Copiar chave</span>
+          </button>
+          <div style="font-size:13px;color:var(--gold);display:flex;align-items:center;gap:6px;justify-content:center;">
+            <i class="ti ti-clock" style="font-size:15px;"></i>
+            Expira em <strong id="pix-timer">14:59</strong>
+          </div>
+        </div>
+      </div>
+      <div id="method-crypto" style="display:none;">
+        <div class="pix-box">
+          <div style="font-size:13px;color:var(--text2);margin-bottom:1rem;">Selecione a moeda</div>
+          <div style="display:flex;gap:8px;justify-content:center;margin-bottom:1.25rem;">
+            <div onclick="selCrypto(this,'BTC')" class="crypto-opt" style="background:#2a1e0a;border:0.5px solid #4a3a1a;color:var(--gold);font-size:12px;padding:7px 16px;border-radius:7px;cursor:pointer;">₿ Bitcoin</div>
+            <div onclick="selCrypto(this,'ETH')" class="crypto-opt" style="background:var(--bg3);border:0.5px solid var(--border);color:var(--text2);font-size:12px;padding:7px 16px;border-radius:7px;cursor:pointer;">Ξ Ethereum</div>
+            <div onclick="selCrypto(this,'USDT')" class="crypto-opt" style="background:var(--bg3);border:0.5px solid var(--border);color:var(--text2);font-size:12px;padding:7px 16px;border-radius:7px;cursor:pointer;">₮ USDT</div>
+          </div>
+          <div class="pix-key" id="crypto-addr">bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</div>
+          <div style="font-size:13px;color:var(--text2);margin-top:.75rem;">Envie exatamente <strong style="color:var(--text);" id="crypto-amt">0.00041 BTC</strong></div>
+        </div>
+      </div>
+    </div>
+    <div class="checkout-right">
+      <div class="section-title" style="margin-bottom:1rem;"><i class="ti ti-receipt" style="font-size:16px;color:var(--purple);"></i>Resumo do pedido</div>
+      <div class="order-card">
+        <div class="order-item">
+          <div class="order-img">
+            <svg viewBox="0 0 100 65" width="44"><rect x="5" y="18" width="85" height="28" rx="4" fill="#ab47bc" opacity=".2"/><rect x="5" y="22" width="70" height="20" rx="3" fill="#ab47bc" opacity=".65"/><rect x="75" y="18" width="18" height="28" rx="3" fill="#7c5ff5" opacity=".45"/></svg>
+          </div>
+          <div class="order-info">
+            <div class="order-name">M4A1-S · <span style="color:var(--gold);font-size:10px;">StatTrak™</span></div>
+            <div class="order-skin">Hyper Beast</div>
+            <span class="wear w-fn" style="margin-top:4px;display:inline-block;">Factory New</span>
+          </div>
+          <div class="order-price">$38.00</div>
+        </div>
+      </div>
+      <div style="margin-top:1rem;">
+        <div class="sum-row"><span class="sum-label">Subtotal</span><span>$38.00</span></div>
+        <div class="sum-row"><span class="sum-label">Taxa de serviço</span><span style="color:var(--green);">$0.00</span></div>
+        <div class="sum-row"><span class="sum-label">Conversão USD→BRL</span><span style="color:var(--green);">R$ 228,00</span></div>
+        <div class="sum-row total" style="border-top:0.5px solid var(--border);margin-top:6px;padding-top:10px;">
+          <span class="sum-label">Total</span><span class="sum-val" id="pay-total">$38.00</span>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text3);margin-bottom:1rem;">
+        <i class="ti ti-lock" style="font-size:14px;color:var(--green);"></i> Pagamento 100% seguro via SSL
+      </div>
+      <button class="btn-primary" id="pay-btn" onclick="showToast('Pagamento processado! Skin transferida em breve.')">
+        <i class="ti ti-shield-check" style="font-size:17px;"></i>
+        <span id="pay-btn-text">Pagar $38.00 com cartão</span>
+      </button>
+      <div style="font-size:11px;color:var(--text3);text-align:center;margin-bottom:1rem;">
+        Ao pagar você concorda com os <span style="color:var(--purple);cursor:pointer;" onclick="goPage('dados')">Termos de uso</span>
+      </div>
+      <div style="display:flex;gap:12px;justify-content:center;">
+        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3);"><i class="ti ti-refresh" style="font-size:14px;"></i> Transferência instantânea</div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3);"><i class="ti ti-headset" style="font-size:14px;"></i> Suporte 24h</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ PAGE: MEUS DADOS ══════════ -->
+<div class="page" id="page-dados">
+  <div class="dados-body">
+    <div style="font-size:15px;font-weight:500;margin-bottom:1rem;display:flex;align-items:center;gap:8px;">
+      <i class="ti ti-shield-lock" style="font-size:18px;color:var(--purple);"></i>
+      Meus Dados &amp; Privacidade
+    </div>
+    <div class="profile-card">
+      <div class="avatar">IK</div>
+      <div>
+        <div style="font-size:15px;font-weight:500;">Ikaro</div>
+        <div style="font-size:12px;color:var(--text3);margin-top:2px;">Membro desde jun 2026 · 3 transações</div>
+      </div>
+      <div class="verified-badge"><i class="ti ti-check" style="font-size:11px;"></i> Verificado</div>
+    </div>
+    <div class="lgpd-box">
+      <i class="ti ti-info-circle" style="font-size:16px;color:var(--purple);flex-shrink:0;"></i>
+      <span>Seus dados são protegidos pela LGPD (Lei nº 13.709/2018). Você pode acessar, corrigir, exportar ou excluir seus dados a qualquer momento.</span>
+    </div>
+    <div class="sec-title">Dados da conta</div>
+    <div class="data-card">
+      <div class="data-row"><span class="data-label"><i class="ti ti-user" style="font-size:15px;"></i> Nome</span><div style="display:flex;align-items:center;"><span class="data-val">Ikaro</span><button class="btn-edit" onclick="openEdit('nome','Ikaro')">Editar</button></div></div>
+      <div class="data-row"><span class="data-label"><i class="ti ti-mail" style="font-size:15px;"></i> E-mail</span><div style="display:flex;align-items:center;"><span class="data-val">ikaro@email.com</span><button class="btn-edit" onclick="openEdit('e-mail','ikaro@email.com')">Editar</button></div></div>
+      <div class="data-row"><span class="data-label"><i class="ti ti-brand-steam" style="font-size:15px;"></i> Steam ID</span><span class="data-val" style="font-family:monospace;font-size:12px;">76561198xxxxxxxxx</span></div>
+      <div class="data-row"><span class="data-label"><i class="ti ti-map-pin" style="font-size:15px;"></i> País</span><div style="display:flex;align-items:center;"><span class="data-val">Brasil</span><button class="btn-edit" onclick="openEdit('país','Brasil')">Editar</button></div></div>
+      <div class="data-row"><span class="data-label"><i class="ti ti-calendar" style="font-size:15px;"></i> Cadastro</span><span class="data-val">25/06/2026</span></div>
+    </div>
+    <div class="sec-title">Seus direitos (LGPD Art. 18)</div>
+    <div class="rights-grid">
+      <div class="right-card" onclick="openRequest('acesso')"><i class="ti ti-file-search"></i><div class="right-title">Acessar dados</div><div class="right-desc">Ver tudo que temos sobre você</div></div>
+      <div class="right-card" onclick="openRequest('correcao')"><i class="ti ti-edit"></i><div class="right-title">Corrigir dados</div><div class="right-desc">Atualizar informações incorretas</div></div>
+      <div class="right-card" onclick="openRequest('portabilidade')"><i class="ti ti-download"></i><div class="right-title">Portabilidade</div><div class="right-desc">Exportar seus dados em JSON</div></div>
+      <div class="right-card" onclick="openRequest('oposicao')"><i class="ti ti-hand-stop"></i><div class="right-title">Oposição</div><div class="right-desc">Contestar uso dos seus dados</div></div>
+    </div>
+    <button class="btn-export" onclick="downloadData()">
+      <i class="ti ti-download" style="font-size:16px;"></i>
+      Exportar meus dados (JSON)
+    </button>
+    <div class="sec-title">Zona de perigo</div>
+    <div class="danger-card">
+      <div class="danger-title"><i class="ti ti-trash" style="font-size:16px;"></i>Excluir minha conta</div>
+      <div class="danger-desc">Remove permanentemente sua conta e saldo. Dados de transações são mantidos por 5 anos (obrigação fiscal — LGPD Art. 16, II). Ação irreversível.</div>
+      <button class="btn-danger" onclick="openModal('modal-delete')"><i class="ti ti-alert-triangle" style="font-size:13px;vertical-align:-1px;margin-right:6px;"></i>Solicitar exclusão da conta</button>
+    </div>
+    <div style="text-align:center;font-size:12px;color:var(--text3);padding-bottom:5rem;">
+      Dúvidas? <a href="mailto:privacidade@skinvault.gg" style="color:var(--purple);">privacidade@skinvault.gg</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ COOKIE BANNER ══════════ -->
+<div class="cookie-banner" id="cookie-banner">
+  <div class="cookie-text">
+    <i class="ti ti-cookie" style="font-size:16px;vertical-align:-3px;margin-right:6px;color:var(--purple);"></i>
+    Usamos cookies para manter sua sessão e melhorar sua experiência.
+    Veja nossa <a onclick="goPage('dados')">Política de Privacidade</a>.
+  </div>
+  <div class="cookie-btns">
+    <button class="btn-cookie-custom" onclick="openModal('modal-cookies')">
+      <i class="ti ti-settings" style="font-size:13px;vertical-align:-1px;margin-right:4px;"></i>Personalizar
+    </button>
+    <button class="btn-cookie-refuse" onclick="refuseCookies()">Recusar opcionais</button>
+    <button class="btn-cookie-accept" onclick="acceptCookies()">
+      <i class="ti ti-check" style="font-size:13px;vertical-align:-1px;margin-right:4px;"></i>Aceitar todos
+    </button>
+  </div>
+</div>
+<button class="cookie-manage" id="cookie-manage" onclick="openModal('modal-cookies')">
+  <i class="ti ti-cookie" style="font-size:13px;vertical-align:-1px;margin-right:4px;"></i>Gerenciar cookies
+</button>
+
+<!-- ══════════ BOTTOM NAV ══════════ -->
+<div class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <div class="bnav-item active" onclick="goPage('home')"><i class="ti ti-home"></i>Início</div>
+    <div class="bnav-item" onclick="goPage('home')"><i class="ti ti-search"></i>Buscar</div>
+    <div class="bnav-item" onclick="goPage('sell')"><i class="ti ti-tag"></i>Vender</div>
+    <div class="bnav-item" onclick="goPage('dados')"><i class="ti ti-user"></i>Perfil</div>
+  </div>
+</div>
+
+<!-- ══════════ MODALS ══════════ -->
+<div class="modal-overlay" id="modal-edit">
+  <div class="modal">
+    <div class="modal-title" id="edit-title">Editar campo</div>
+    <div class="modal-desc">A alteração será salva imediatamente.</div>
+    <input class="modal-input" id="edit-input" type="text">
+    <div class="modal-btns">
+      <button class="btn-modal-cancel" onclick="closeModal('modal-edit')">Cancelar</button>
+      <button class="btn-modal-confirm" onclick="closeModal('modal-edit');showToast('Dado atualizado!')"><i class="ti ti-check" style="font-size:13px;vertical-align:-1px;margin-right:4px;"></i>Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-request">
+  <div class="modal">
+    <div class="modal-title" id="req-title">Solicitar acesso</div>
+    <div class="modal-desc" id="req-desc">Respondemos em até 15 dias úteis conforme a LGPD.</div>
+    <textarea class="modal-input" id="req-text" rows="3" placeholder="Descreva sua solicitação..." style="resize:none;"></textarea>
+    <div class="modal-btns">
+      <button class="btn-modal-cancel" onclick="closeModal('modal-request')">Cancelar</button>
+      <button class="btn-modal-confirm" onclick="closeModal('modal-request');showToast('Solicitação enviada! Respondemos em até 15 dias úteis.')"><i class="ti ti-send" style="font-size:13px;vertical-align:-1px;margin-right:4px;"></i>Enviar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-delete">
+  <div class="modal">
+    <div class="modal-title" style="color:#e87070;"><i class="ti ti-alert-triangle" style="font-size:15px;vertical-align:-2px;margin-right:6px;"></i>Excluir conta</div>
+    <div class="modal-desc">Esta ação é <strong>irreversível</strong>. Digite <strong>EXCLUIR</strong> para confirmar.</div>
+    <input class="modal-input" id="delete-confirm" type="text" placeholder="Digite EXCLUIR">
+    <div class="modal-btns">
+      <button class="btn-modal-cancel" onclick="closeModal('modal-delete')">Cancelar</button>
+      <button class="btn-modal-confirm danger" onclick="confirmDelete()">Excluir conta</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-cookies">
+  <div class="modal">
+    <div class="modal-title"><i class="ti ti-adjustments-horizontal" style="font-size:15px;vertical-align:-2px;margin-right:6px;color:var(--purple);"></i>Preferências de cookies</div>
+    <div class="modal-desc">Escolha quais cookies deseja permitir.</div>
+    <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">Essenciais</div><div class="toggle-desc">Login e segurança — obrigatórios</div></div><label class="toggle"><input type="checkbox" checked disabled><span class="t-slider"></span></label></div>
+    <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">Desempenho</div><div class="toggle-desc">Análise anônima de uso</div></div><label class="toggle"><input type="checkbox" id="ck-perf" checked><span class="t-slider"></span></label></div>
+    <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">Preferências</div><div class="toggle-desc">Tema e configurações salvas</div></div><label class="toggle"><input type="checkbox" id="ck-pref" checked><span class="t-slider"></span></label></div>
+    <div class="toggle-row"><div class="toggle-info"><div class="toggle-name">Marketing</div><div class="toggle-desc">Personalização de ofertas</div></div><label class="toggle"><input type="checkbox" id="ck-mkt"><span class="t-slider"></span></label></div>
+    <div class="modal-btns" style="margin-top:1rem;">
+      <button class="btn-modal-cancel" onclick="closeModal('modal-cookies')">Cancelar</button>
+      <button class="btn-modal-confirm" onclick="savePrefs()"><i class="ti ti-check" style="font-size:13px;vertical-align:-1px;margin-right:4px;"></i>Salvar preferências</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL AFILIADOS -->
+<div class="modal-overlay" id="modal-afiliados">
+  <div class="modal" style="max-width:420px;">
+    <div class="modal-title">
+      <i class="ti ti-users" style="font-size:16px;vertical-align:-2px;margin-right:6px;color:var(--purple);"></i>
+      Programa de Afiliados
+    </div>
+    <div class="modal-desc">Indique amigos e ganhe <strong style="color:var(--green);">1%</strong> de comissão em cada venda que vier do seu link. Sem limite de ganhos.</div>
+
+    <div style="background:#0a2a1e;border:0.5px solid #1a4a3a;border-radius:8px;padding:12px;margin-bottom:1rem;">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center;">
+        <div>
+          <div style="font-size:20px;font-weight:600;color:var(--green);" id="af-ganhos">$0.00</div>
+          <div style="font-size:11px;color:var(--text3);">Total ganho</div>
+        </div>
+        <div>
+          <div style="font-size:20px;font-weight:600;color:var(--purple-light);" id="af-indicacoes">0</div>
+          <div style="font-size:11px;color:var(--text3);">Indicações</div>
+        </div>
+        <div>
+          <div style="font-size:20px;font-weight:600;color:var(--gold);" id="af-comissao">1%</div>
+          <div style="font-size:11px;color:var(--text3);">Por venda</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="font-size:12px;color:var(--text3);margin-bottom:6px;">Seu link exclusivo</div>
+    <div style="display:flex;gap:8px;margin-bottom:1rem;">
+      <input id="af-link" type="text" readonly
+        style="flex:1;background:var(--bg3);border:0.5px solid var(--border);color:var(--text2);font-size:11px;padding:8px 10px;border-radius:8px;font-family:monospace;"
+        value="https://skinvault.gg?ref=SV-XXXX">
+      <button onclick="copiarLinkAfiliado()"
+        style="background:var(--purple-dark);border:0.5px solid var(--purple);color:var(--purple-light);font-size:12px;padding:8px 14px;border-radius:8px;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:5px;">
+        <i class="ti ti-copy" style="font-size:14px;"></i> Copiar
+      </button>
+    </div>
+
+    <div style="background:var(--bg3);border:0.5px solid var(--border);border-radius:8px;padding:12px;margin-bottom:1rem;">
+      <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:8px;">Como funciona</div>
+      <div style="font-size:12px;color:var(--text3);display:flex;flex-direction:column;gap:6px;">
+        <div><i class="ti ti-circle-check" style="font-size:13px;color:var(--green);vertical-align:-2px;margin-right:5px;"></i>Compartilhe seu link</div>
+        <div><i class="ti ti-circle-check" style="font-size:13px;color:var(--green);vertical-align:-2px;margin-right:5px;"></i>Seu amigo se cadastra e vende uma skin</div>
+        <div><i class="ti ti-circle-check" style="font-size:13px;color:var(--green);vertical-align:-2px;margin-right:5px;"></i>Você recebe 1% do valor automaticamente</div>
+        <div><i class="ti ti-circle-check" style="font-size:13px;color:var(--green);vertical-align:-2px;margin-right:5px;"></i>Sem limite — quanto mais indicar, mais ganha</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:8px;">
+      <button class="btn-modal-cancel" onclick="closeModal('modal-afiliados')">Fechar</button>
+      <button class="btn-modal-confirm"
+        onclick="navigator.share ? navigator.share({title:'SkinVault',text:'Venda suas skins com só 5% de taxa!',url:document.getElementById(\'af-link\').value}) : copiarLinkAfiliado()">
+        <i class="ti ti-share" style="font-size:14px;vertical-align:-2px;margin-right:4px;"></i>
+        Compartilhar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+
+<!-- ══════════ CHAT AO VIVO ══════════ -->
+<div id="sv-chat-btn" onclick="toggleChat()"
+  style="position:fixed;bottom:5rem;right:1.25rem;width:52px;height:52px;background:linear-gradient(135deg,#7c5ff5,#3d9ef5);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:800;box-shadow:0 4px 20px rgba(124,95,245,0.5);transition:transform .2s;">
+  <i class="ti ti-robot" style="font-size:24px;color:#fff;" id="chat-btn-icon"></i>
+  <div id="chat-notif" style="position:absolute;top:-2px;right:-2px;width:18px;height:18px;background:#ef5350;border-radius:50%;font-size:10px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;">1</div>
+</div>
+
+<!-- VAULTAI PROATIVO — balão contextual -->
+<div id="vault-proativo"
+  style="position:fixed;bottom:9.5rem;right:1.25rem;max-width:260px;background:linear-gradient(135deg,#2a1f5a,#1a1040);border:0.5px solid #7c5ff5;border-radius:14px 14px 0 14px;padding:12px 14px;z-index:799;display:none;box-shadow:0 8px 24px rgba(124,95,245,0.3);animation:slideUp .3s ease;">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+    <div style="width:24px;height:24px;background:linear-gradient(135deg,#7c5ff5,#3d9ef5);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <i class="ti ti-robot" style="font-size:12px;color:#fff;"></i>
+    </div>
+    <span style="font-size:11px;font-weight:500;color:#c4b0ff;">VaultAI</span>
+    <button onclick="fecharProativo()" style="background:none;border:none;color:#556677;font-size:14px;cursor:pointer;margin-left:auto;padding:0;">
+      <i class="ti ti-x"></i>
+    </button>
+  </div>
+  <div id="vault-proativo-msg" style="font-size:13px;color:#e8e8f0;line-height:1.5;"></div>
+  <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;" id="vault-proativo-btns"></div>
+</div>
+
+<div id="sv-chat-box"
+  style="position:fixed;bottom:9.5rem;right:1.25rem;width:320px;background:var(--bg2);border:0.5px solid var(--border);border-radius:14px;z-index:800;display:none;flex-direction:column;box-shadow:0 8px 32px rgba(0,0,0,0.5);overflow:hidden;max-height:460px;">
+
+  <!-- Header -->
+  <div style="background:linear-gradient(135deg,#2a1f5a,#1a1040);padding:14px 16px;display:flex;align-items:center;gap:10px;">
+    <div style="width:36px;height:36px;background:linear-gradient(135deg,#7c5ff5,#3d9ef5);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(124,95,245,0.5);">
+      <i class="ti ti-robot" style="font-size:18px;color:#fff;"></i>
+    </div>
+    <div style="flex:1;">
+      <div style="font-size:14px;font-weight:500;color:#fff;">VaultAI <span style="font-size:10px;background:#2a1f5a;border:0.5px solid #7c5ff5;color:#c4b0ff;padding:1px 6px;border-radius:4px;margin-left:4px;">IA</span></div>
+      <div style="font-size:11px;color:#9a80ff;display:flex;align-items:center;gap:4px;">
+        <span style="width:7px;height:7px;background:#4caf78;border-radius:50%;display:inline-block;animation:pulse-dot 2s infinite;"></span>
+        Acompanhando você • Online 24h
+      </div>
+    </div>
+    <button onclick="toggleChat()" style="background:none;border:none;color:#9a80ff;font-size:20px;cursor:pointer;padding:2px;">
+      <i class="ti ti-x"></i>
+    </button>
+  </div>
+
+  <!-- Contexto da página atual -->
+  <div id="chat-context-bar" style="background:#1a1030;border-bottom:0.5px solid #2a2044;padding:8px 14px;display:flex;align-items:center;gap:7px;">
+    <i id="ctx-icon" class="ti ti-home" style="font-size:14px;color:#7c5ff5;"></i>
+    <span id="ctx-label" style="font-size:11px;color:#667799;">Explorando o marketplace</span>
+  </div>
+
+  <!-- Mensagens -->
+  <div id="chat-messages"
+    style="flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;min-height:200px;max-height:260px;scrollbar-width:thin;">
+
+    <!-- Mensagem automática de boas vindas -->
+    <div style="display:flex;gap:8px;align-items:flex-end;">
+      <div style="width:28px;height:28px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <i class="ti ti-shield" style="font-size:13px;color:#fff;"></i>
+      </div>
+      <div>
+        <div style="background:#1e1440;border:0.5px solid #3a2a6a;border-radius:12px 12px 12px 0;padding:10px 12px;font-size:13px;color:var(--text);max-width:220px;line-height:1.5;">
+          Olá, <strong id="chat-username" style="color:#c4b0ff;">visitante</strong>! 👋 Bem-vindo ao SkinVault. Sou o VaultAI, seu assistente inteligente. Como posso te ajudar hoje?
+        </div>
+        <div style="font-size:10px;color:var(--text3);margin-top:3px;margin-left:4px;">Suporte • agora</div>
+      </div>
+    </div>
+
+    <!-- Respostas rápidas -->
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;">
+      <button onclick="quickReply('Avalie meu inventário de skins')" class="quick-reply-btn">🎯 Avaliar skins</button>
+      <button onclick="quickReply('Quero uma faca até $300')" class="quick-reply-btn">🔍 Buscar skin</button>
+      <button onclick="quickReply('Monte um loadout completo por $200')" class="quick-reply-btn">🎨 Montar loadout</button>
+      <button onclick="quickReply('Quais skins estão valorizando agora?')" class="quick-reply-btn">📈 Mercado</button>
+      <button onclick="quickReply('Como detectar golpes em trades?')" class="quick-reply-btn">🛡️ Anti-fraude</button>
+      <button onclick="quickReply('Como funciona o saque no SkinVault?')" class="quick-reply-btn">💰 Suporte</button>
+    </div>
+
+  </div>
+
+  <!-- Input -->
+  <div style="padding:10px 12px;border-top:0.5px solid var(--border2);display:flex;gap:8px;align-items:center;">
+    <input id="chat-input" type="text" placeholder="Digite sua mensagem..."
+      style="flex:1;background:var(--bg3);border:0.5px solid var(--border);color:var(--text);font-size:13px;padding:8px 12px;border-radius:20px;outline:none;"
+      onkeydown="if(event.key==='Enter')sendChatMsg()"
+      onfocus="document.getElementById('chat-notif').style.display='none'">
+    <button onclick="sendChatMsg()"
+      style="width:36px;height:36px;background:var(--purple);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <i class="ti ti-send" style="font-size:16px;color:#fff;"></i>
+    </button>
+  </div>
+</div>
+<div class="toast" id="toast"><i class="ti ti-circle-check" style="font-size:16px;"></i><span id="toast-text"></span></div>
+
+<script>
+// ══════════════════════════════════════════════
+// SUPABASE — Conexão com o banco de dados
+// ══════════════════════════════════════════════
+const SUPABASE_URL = 'https://zgvvqbsqebubacaycpoi.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_JuEx6T_ozjRchRWlufBDSQ_f5xZzdno';
+
+const sb = {
+  async query(table, options = {}) {
+    let url = `${SUPABASE_URL}/rest/v1/${table}?`;
+    if (options.select) url += `select=${options.select}&`;
+    if (options.filter) url += `${options.filter}&`;
+    if (options.order) url += `order=${options.order}&`;
+    if (options.limit) url += `limit=${options.limit}&`;
+    const res = await fetch(url, {
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    return res.json();
+  },
+
+  async insert(table, data) {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=representation'
+      },
+      body: JSON.stringify(data)
+    });
+    return res.json();
+  },
+
+  async update(table, data, filter) {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${filter}`, {
+      method: 'PATCH',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=representation'
+      },
+      body: JSON.stringify(data)
+    });
+    return res.json();
+  },
+
+  async delete(table, filter) {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${filter}`, {
+      method: 'DELETE',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`
+      }
+    });
+    return res.ok;
+  }
+};
+
+// Carregar skins do banco de dados
+async function loadSkinsFromDB() {
+  try {
+    const data = await sb.query('skins', {
+      select: '*',
+      filter: 'disponivel=eq.true',
+      order: 'criado_em.desc'
+    });
+    if (data && data.length > 0) {
+      // Se tiver skins no banco, usa elas
+      return data.map(s => ({
+        id: s.id,
+        name: s.nome,
+        skin: s.skin,
+        wear: s.wear || 'FN',
+        float: s.float_val ? s.float_val.toString() : '0.00',
+        price: parseFloat(s.preco),
+        cat: s.categoria || 'rifle',
+        stat: s.stat_trak || false,
+        c: '#7c5ff5'
+      }));
+    }
+  } catch(e) {
+    console.log('Usando dados de demonstração');
+  }
+  return null;
+}
+
+// Salvar transação no banco
+async function saveTransaction(skinId, valor) {
+  try {
+    await sb.insert('transacoes', {
+      skin_id: skinId,
+      valor: valor,
+      taxa: valor * 0.05,
+      status: 'pendente'
+    });
+  } catch(e) {
+    console.log('Erro ao salvar transação:', e);
+  }
+}
+
+// Listar skin para venda
+async function listSkinForSale(skinData) {
+  try {
+    const result = await sb.insert('skins', skinData);
+    return result;
+  } catch(e) {
+    console.log('Erro ao listar skin:', e);
+  }
+}
+
+const SKINS = [
+  {id:1,name:'AK-47',skin:'Asiimov',wear:'FT',float:'0.27',price:89.50,cat:'rifle',stat:false,c:'#ff6b35'},
+  {id:2,name:'AWP',skin:'Dragon Lore',wear:'FN',float:'0.01',price:1840,cat:'rifle',stat:false,c:'#f5a623',badge:'Raro'},
+  {id:3,name:'M4A4',skin:'Howl',wear:'MW',float:'0.09',price:920,cat:'rifle',stat:false,c:'#e83a3a',badge:'Contraband'},
+  {id:4,name:'Glock-18',skin:'Fade',wear:'FN',float:'0.01',price:280,cat:'pistol',stat:true,c:'#ff9f43'},
+  {id:5,name:'USP-S',skin:'Kill Confirmed',wear:'FN',float:'0.03',price:42,cat:'pistol',stat:false,c:'#c8a04a'},
+  {id:6,name:'Karambit',skin:'Doppler',wear:'FN',float:'0.02',price:760,cat:'knife',stat:false,c:'#4fc3f7',badge:'Faca'},
+  {id:7,name:'AK-47',skin:'Case Hardened',wear:'FT',float:'0.19',price:67,cat:'rifle',stat:false,c:'#7986cb'},
+  {id:8,name:'Desert Eagle',skin:'Blaze',wear:'FN',float:'0.00',price:195,cat:'pistol',stat:false,c:'#ff8f00'},
+  {id:9,name:'M4A1-S',skin:'Hyper Beast',wear:'FN',float:'0.03',price:38,cat:'rifle',stat:true,c:'#ab47bc'},
+  {id:10,name:'AWP',skin:'Medusa',wear:'FT',float:'0.22',price:310,cat:'rifle',stat:false,c:'#26a69a'},
+  {id:11,name:'Butterfly Knife',skin:'Marble Fade',wear:'FN',float:'0.01',price:1100,cat:'knife',stat:false,c:'#ef5350',badge:'Faca'},
+  {id:12,name:'Sport Gloves',skin:"Pandora's Box",wear:'FT',float:'0.31',price:580,cat:'glove',stat:false,c:'#7c5ff5',badge:'Luvas'},
+  {id:13,name:'MP9',skin:'Wild Lily',wear:'FN',float:'0.04',price:14.50,cat:'smg',stat:false,c:'#66bb6a'},
+  {id:14,name:'P250',skin:'See Ya Later',wear:'FN',float:'0.06',price:8.20,cat:'pistol',stat:false,c:'#29b6f6'},
+  {id:15,name:'AK-47',skin:'Fire Serpent',wear:'WW',float:'0.42',price:290,cat:'rifle',stat:false,c:'#ff7043'},
+  {id:16,name:'MAC-10',skin:'Neon Rider',wear:'MW',float:'0.12',price:22,cat:'smg',stat:false,c:'#ec407a'},
+];
+
+const wearLabel={FN:'Factory New',MW:'Minimal Wear',FT:'Field-Tested',WW:'Well-Worn',BS:'Battle-Scarred'};
+const wearClass={FN:'w-fn',MW:'w-mw',FT:'w-ft',WW:'w-ww',BS:'w-bs'};
+
+let activeTab='all', activeChips=new Set(['all']), sortMode='price-asc';
+let selectedInv=new Set();
+let pixInterval, pixSec=899;
+
+function skinSVG(c,w=80){return`<svg viewBox="0 0 120 80" width="${w}"><rect x="8" y="25" width="95" height="30" rx="5" fill="${c}" opacity=".2"/><rect x="8" y="29" width="78" height="22" rx="4" fill="${c}" opacity=".6"/><rect x="86" y="25" width="20" height="30" rx="4" fill="${c}" opacity=".4"/><rect x="16" y="47" width="18" height="14" rx="3" fill="${c}" opacity=".5"/></svg>`;}
+
+function renderSkins(){
+  const q=document.getElementById('skin-search').value.toLowerCase();
+  let list=SKINS.filter(s=>{
+    if(activeTab!=='all'&&s.cat!==activeTab)return false;
+    if(!activeChips.has('all')){
+      if(activeChips.has('fn')&&s.wear!=='FN')return false;
+      if(activeChips.has('mw')&&s.wear!=='MW')return false;
+      if(activeChips.has('ft')&&s.wear!=='FT')return false;
+      if(activeChips.has('stat')&&!s.stat)return false;
+    }
+    if(q&&!(s.name+' '+s.skin).toLowerCase().includes(q))return false;
+    return true;
+  });
+  if(sortMode==='price-asc')list.sort((a,b)=>a.price-b.price);
+  else if(sortMode==='price-desc')list.sort((a,b)=>b.price-a.price);
+  else if(sortMode==='float-asc')list.sort((a,b)=>parseFloat(a.float)-parseFloat(b.float));
+  else list.sort((a,b)=>(a.name+a.skin).localeCompare(b.name+b.skin));
+  document.getElementById('skin-grid').innerHTML=list.map(s=>`
+    <div class="skin-card" onclick="goPage('checkout')">
+      ${s.badge?`<div class="card-badge">${s.badge}</div>`:''}
+      <div class="skin-img">${skinSVG(s.c)}</div>
+      <div class="skin-name">${s.name}${s.stat?' <span class="stat-tag">ST™</span>':''}</div>
+      <div class="skin-skin">${s.skin}</div>
+      <div class="skin-row">
+        <span class="skin-price">$${s.price.toFixed(2)}</span>
+        <span class="wear ${wearClass[s.wear]||''}">${s.wear}</span>
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('grid-footer').textContent=list.length+' skins encontradas';
+}
+
+function setTab(el,tab){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active'); activeTab=tab; renderSkins();
+}
+function toggleChip(el,val){
+  if(val==='all'){activeChips=new Set(['all']);document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');}
+  else{activeChips.delete('all');document.querySelector('.chip').classList.remove('active');
+    el.classList.contains('active')?(el.classList.remove('active'),activeChips.delete(val)):(el.classList.add('active'),activeChips.add(val));
+    if(!activeChips.size){activeChips.add('all');document.querySelector('.chip').classList.add('active');}
+  }
+  renderSkins();
+}
+
+// ── INVENTORY ──
+function renderInv(){
+  const q=document.getElementById('inv-search').value.toLowerCase();
+  let list=SKINS.filter(s=>!q||(s.name+' '+s.skin).toLowerCase().includes(q));
+  document.getElementById('inv-grid').innerHTML=list.map(s=>`
+    <div class="inv-item${selectedInv.has(s.id)?' sel':''}" onclick="toggleInv(${s.id})">
+      <div class="inv-check">${selectedInv.has(s.id)?'<i class="ti ti-check" style="font-size:10px;"></i>':''}</div>
+      <div class="inv-img">${skinSVG(s.c,44)}</div>
+      <div class="inv-item-name">${s.name}</div>
+      <div class="inv-item-skin">${s.skin}</div>
+      <div class="inv-item-row"><span class="inv-price">$${s.price.toFixed(2)}</span><span class="wear ${wearClass[s.wear]||''}" style="font-size:9px;">${s.wear}</span></div>
+    </div>
+  `).join('');
+  updateSellPanel();
+}
+function toggleInv(id){selectedInv.has(id)?selectedInv.delete(id):selectedInv.add(id);renderInv();}
+function updateSellPanel(){
+  const items=SKINS.filter(s=>selectedInv.has(s.id));
+  const total=items.reduce((a,b)=>a+b.price,0);
+  const fee=total*0.05, you=total-fee;
+  document.getElementById('sell-empty').style.display=items.length?'none':'';
+  document.getElementById('sell-sel-list').style.display=items.length?'':'none';
+  document.getElementById('sell-summary').style.display=items.length?'':'none';
+  if(items.length){
+    document.getElementById('sell-sel-list').innerHTML=items.map(s=>`
+      <div class="sel-item">
+        <div class="sel-img">${skinSVG(s.c,30)}</div>
+        <div class="sel-info"><div class="sel-n">${s.name}</div><div class="sel-s">${s.skin}</div></div>
+        <div class="sel-p-col"><div class="sel-p">$${s.price.toFixed(2)}</div><div class="sel-you">→ $${(s.price*0.95).toFixed(2)}</div></div>
+        <button class="btn-remove" onclick="event.stopPropagation();toggleInv(${s.id})"><i class="ti ti-x"></i></button>
+      </div>`).join('');
+    document.getElementById('s-market').textContent='$'+total.toFixed(2);
+    document.getElementById('s-fee').textContent='-$'+fee.toFixed(2);
+    document.getElementById('s-you').textContent='$'+you.toFixed(2);
+  }
+  const btn=document.getElementById('sell-btn');
+  btn.disabled=!items.length;
+  document.getElementById('sell-btn-text').textContent=items.length?`Listar ${items.length} skin${items.length>1?'s':''} — $${you.toFixed(2)} ↗`:'Selecione itens para listar';
+}
+
+// ── CHECKOUT ──
+function setMethod(m,el){
+  document.querySelectorAll('.method').forEach(x=>x.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('method-card').style.display=m==='card'?'':'none';
+  document.getElementById('method-pix').style.display=m==='pix'?'':'none';
+  document.getElementById('method-crypto').style.display=m==='crypto'?'':'none';
+  document.getElementById('pay-btn-text').textContent=m==='card'?'Pagar $38.00 com cartão':m==='pix'?'Confirmar pagamento via Pix':'Confirmar em crypto';
+  if(m==='pix'&&!pixInterval)startPix();
+}
+function fmtCard(el){let v=el.value.replace(/\D/g,'').substring(0,16);el.value=v.replace(/(.{4})/g,'$1 ').trim();document.getElementById('card-display').textContent=v.padEnd(16,'•').replace(/(.{4})/g,'$1 ').trim();}
+function fmtExp(el){let v=el.value.replace(/\D/g,'');if(v.length>=2)v=v.substring(0,2)+'/'+v.substring(2,4);el.value=v;document.getElementById('exp-display').textContent=v||'MM/AA';}
+function copyPix(){const t=document.getElementById('pix-copy-text');t.textContent='Copiado!';setTimeout(()=>t.textContent='Copiar chave',2000);}
+function startPix(){pixInterval=setInterval(()=>{pixSec--;if(pixSec<=0){clearInterval(pixInterval);document.getElementById('pix-timer').textContent='Expirado';return;}const m=Math.floor(pixSec/60),s=pixSec%60;document.getElementById('pix-timer').textContent=m+':'+(s<10?'0':'')+s;},1000);}
+function selCrypto(el,c){document.querySelectorAll('.crypto-opt').forEach(x=>{x.style.background='var(--bg3)';x.style.borderColor='var(--border)';x.style.color='var(--text2)';});el.style.background='#2a1e0a';el.style.borderColor='#4a3a1a';el.style.color='var(--gold)';const d={BTC:{addr:'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',amt:'0.00041 BTC'},ETH:{addr:'0x742d35Cc6634C0532925a3b8D4C9C4e8f3a1234',amt:'0.0142 ETH'},USDT:{addr:'TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE',amt:'38.00 USDT'}};document.getElementById('crypto-addr').textContent=d[c].addr;document.getElementById('crypto-amt').textContent=d[c].amt;}
+
+// ── DADOS / LGPD ──
+const reqTitles={acesso:'Solicitar acesso aos dados',correcao:'Solicitar correção de dados',portabilidade:'Solicitar portabilidade',oposicao:'Registrar oposição'};
+const reqDescs={acesso:'Você receberá um relatório com todos os seus dados em até 15 dias úteis.',correcao:'Descreva os dados incorretos e o valor correto. Atualizamos em até 15 dias úteis.',portabilidade:'Você receberá um arquivo JSON com todos os seus dados em até 15 dias úteis.',oposicao:'Descreva sua oposição. Analisamos e respondemos em até 15 dias úteis.'};
+function openEdit(field,current){document.getElementById('edit-title').textContent='Editar '+field;document.getElementById('edit-input').value=current;openModal('modal-edit');}
+function openRequest(type){document.getElementById('req-title').textContent=reqTitles[type];document.getElementById('req-desc').textContent=reqDescs[type];document.getElementById('req-text').value='';openModal('modal-request');}
+function downloadData(){const d={exportado_em:new Date().toISOString(),usuario:{nome:'Ikaro',email:'ikaro@email.com',pais:'Brasil',membro_desde:'2026-06-25'},transacoes:[{data:'2026-06-25',tipo:'venda',skin:'AK-47 | Asiimov',valor_usd:89.50},{data:'2026-06-24',tipo:'compra',skin:'M4A1-S | Hyper Beast',valor_usd:38.00}],aviso:'Dados exportados conforme LGPD Art. 18, V'};const b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='skinvault_meus_dados.json';a.click();showToast('Download iniciado!');}
+function confirmDelete(){const v=document.getElementById('delete-confirm').value.trim();if(v!=='EXCLUIR'){showToast('Digite EXCLUIR para confirmar.',true);return;}closeModal('modal-delete');showToast('Solicitação enviada. Processamos em até 30 dias.');}
+
+// ── COOKIES ──
+function acceptCookies(){document.getElementById('cookie-banner').style.display='none';document.getElementById('cookie-manage').style.display='block';showToast('Todos os cookies aceitos!');}
+function refuseCookies(){['ck-perf','ck-pref','ck-mkt'].forEach(id=>document.getElementById(id).checked=false);document.getElementById('cookie-banner').style.display='none';document.getElementById('cookie-manage').style.display='block';showToast('Apenas cookies essenciais ativados.');}
+function savePrefs(){closeModal('modal-cookies');document.getElementById('cookie-banner').style.display='none';document.getElementById('cookie-manage').style.display='block';showToast('Preferências de cookies salvas!');}
+
+// ── MODAL ──
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+
+// ── TOAST ──
+let toastTimer;
+function showToast(msg,danger=false){
+  const t=document.getElementById('toast');
+  document.getElementById('toast-text').textContent=msg;
+  t.className='toast show'+(danger?' danger':'');
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ── NAVIGATION ──
+function goPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  const map={home:0,sell:1,dados:2};
+  const links=document.querySelectorAll('.nav-links a');
+  if(map[id]!==undefined)links[map[id]].classList.add('active');
+  document.querySelectorAll('.bnav-item').forEach((b,i)=>b.classList.toggle('active',i===(map[id]||0)));
+  window.scrollTo(0,0);
+}
+
+function toggleMenu(){
+  const m=document.getElementById('mobile-menu');
+  m.style.display=m.style.display==='flex'?'none':'flex';
+}
+
+// ══════════════════════════════════════════════
+// SISTEMA DE AFILIADOS
+// ══════════════════════════════════════════════
+
+const AFILIADO_COMISSAO = 0.01; // 1% para o afiliado
+const SKINVAULT_TAXA = 0.04;    // 4% para o SkinVault
+
+function gerarLinkAfiliado(userId) {
+  const codigo = 'SV-' + userId.substring(0,6).toUpperCase();
+  return `https://skinvault.gg?ref=${codigo}`;
+}
+
+function calcularComissaoAfiliado(valor) {
+  return {
+    afiliado: valor * AFILIADO_COMISSAO,
+    skinvault: valor * SKINVAULT_TAXA,
+    total: valor * (AFILIADO_COMISSAO + SKINVAULT_TAXA)
+  };
+}
+
+function getAfiliadoFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('ref') || localStorage.getItem('sv_ref') || null;
+}
+
+function salvarAfiliado(codigo) {
+  if (codigo) localStorage.setItem('sv_ref', codigo);
+}
+
+async function registrarIndicacao(afiliadoCodigo, transacaoId, valor) {
+  const comissao = calcularComissaoAfiliado(valor);
+  try {
+    await sb.insert('transacoes', {
+      status: 'comissao_afiliado',
+      valor: comissao.afiliado,
+      taxa: 0,
+      skin_id: null
+    });
+  } catch(e) {
+    console.log('Erro ao registrar comissão:', e);
+  }
+}
+
+function abrirPainelAfiliados() {
+  const ref = getAfiliadoFromURL() || 'SV-DEMO';
+  const link = `https://skinvault.gg?ref=${ref}`;
+  document.getElementById('af-link').value = link;
+  document.getElementById('af-comissao').textContent = '1% por venda indicada';
+  document.getElementById('af-ganhos').textContent = '$0.00';
+  document.getElementById('af-indicacoes').textContent = '0';
+  openModal('modal-afiliados');
+}
+
+function copiarLinkAfiliado() {
+  const link = document.getElementById('af-link').value;
+  navigator.clipboard.writeText(link).then(() => {
+    showToast('Link de afiliado copiado!');
+  }).catch(() => {
+    document.getElementById('af-link').select();
+    showToast('Selecione e copie o link manualmente');
+  });
+}
+
+// Detectar ref na URL ao carregar
+const refURL = getAfiliadoFromURL();
+if (refURL) salvarAfiliado(refURL);
+
+// ── CHAT AO VIVO ──
+// ══════════════════════════════════════════════
+// VAULT AI — Agente de Inteligência Artificial
+// ══════════════════════════════════════════════
+
+let chatOpen = false;
+let chatHistory = [];
+
+const VAULT_AI_SYSTEM = `Você é o VaultAI, o agente de inteligência artificial do SkinVault — o marketplace P2P de skins de CS2 com a menor taxa do mercado (apenas 5%). Você fala português brasileiro de forma amigável, direta e especializada no mercado de skins de CS2.
+
+O nome do usuário que está conversando com você é: ${window.currentUser?.nome || 'Ikaro'}. Use o nome dele naturalmente nas respostas, especialmente no início da conversa e quando der recomendações personalizadas. Não use o nome em toda frase — apenas quando ficar natural.
+
+Você tem 10 capacidades principais:
+
+1. AVALIADOR DE SKINS: Analisa skins, estima valores, compara com média de mercado, indica se é bom momento para vender/segurar. Use dados realistas de preços de CS2.
+
+2. CONSULTOR DE INVESTIMENTOS: Orienta sobre valorização de skins, coleções que estão saindo de circulação, oportunidades de longo prazo e riscos.
+
+3. ASSISTENTE DE TROCAS: Analisa se uma troca é justa, calcula lucro/prejuízo, diferenças de liquidez e detecta possíveis golpes.
+
+4. DETECTOR DE FRAUDES: Alerta sobre golpes comuns no mercado de skins, perfis suspeitos, phishing, falsos intermediários e padrões de scam.
+
+5. MOTOR DE BUSCA CONVERSACIONAL: O usuário descreve o que quer em linguagem natural ("quero uma faca vermelha até $300") e você sugere skins compatíveis do catálogo.
+
+6. MONTADOR DE LOADOUTS: Monta inventários completos com base em orçamento, cor preferida, arma favorita e estilo (pro player, luxo, anime, etc.).
+
+7. ANALISTA DE MERCADO: Responde perguntas sobre tendências, skins em alta, coleções mais negociadas, previsões de mercado.
+
+8. SUPORTE 24H: Resolve dúvidas sobre depósitos, saques, pagamentos, integração Steam, status de trades e como usar o SkinVault.
+
+9. MEMÓRIA DO USUÁRIO: Lembra preferências mencionadas na conversa (cor favorita, orçamento, armas preferidas) e personaliza sugestões.
+
+10. CAÇADOR DE OPORTUNIDADES: Quando o usuário define orçamento e critérios, você identifica e alerta sobre oportunidades de compra abaixo do valor de mercado.
+
+Informações do SkinVault:
+- Taxa: 5% por venda (Steam cobra 15%)
+- Saque via Pix em até 3 dias úteis
+- Transferência instantânea via Steam Trade
+- Programa de afiliados: 1% por indicação
+- Suporte: suporte@skinvault.gg
+
+Skins disponíveis no catálogo atual (use para sugestões):
+AK-47 Asiimov ($89.50), AWP Dragon Lore ($1840), M4A4 Howl ($920), Glock-18 Fade ($280), USP-S Kill Confirmed ($42), Karambit Doppler ($760), AK-47 Case Hardened ($67), Desert Eagle Blaze ($195), M4A1-S Hyper Beast ($38), AWP Medusa ($310), Butterfly Knife Marble Fade ($1100), Sport Gloves Pandora's Box ($580), MP9 Wild Lily ($14.50), P250 See Ya Later ($8.20), AK-47 Fire Serpent ($290), MAC-10 Neon Rider ($22).
+
+Responda sempre em português brasileiro. Seja específico, use números reais e emojis moderadamente. Nunca invente informações críticas de segurança. Se não souber algo, diga honestamente.`;
+
+function toggleChat() {
+  chatOpen = !chatOpen;
+  const box = document.getElementById('sv-chat-box');
+  const icon = document.getElementById('chat-btn-icon');
+  const notif = document.getElementById('chat-notif');
+  box.style.display = chatOpen ? 'flex' : 'none';
+  icon.className = chatOpen ? 'ti ti-x' : 'ti ti-message-circle';
+  notif.style.display = 'none';
+  if (chatOpen) {
+    setTimeout(() => {
+      const msgs = document.getElementById('chat-messages');
+      msgs.scrollTop = msgs.scrollHeight;
+      document.getElementById('chat-input').focus();
+    }, 100);
+  }
+}
+
+function addMsg(text, isUser, isStreaming = false) {
+  const msgs = document.getElementById('chat-messages');
+  const time = new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+  const id = 'msg-' + Date.now();
+  if (isUser) {
+    msgs.innerHTML += `
+      <div class="msg-user">
+        <div>
+          <div class="msg-user-bubble">${text}</div>
+          <div class="msg-time" style="text-align:right;">${time}</div>
+        </div>
+      </div>`;
+  } else {
+    msgs.innerHTML += `
+      <div class="msg-bot" id="${id}">
+        <div style="width:28px;height:28px;background:linear-gradient(135deg,#7c5ff5,#3d9ef5);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(124,95,245,0.4);">
+          <i class="ti ti-robot" style="font-size:13px;color:#fff;"></i>
+        </div>
+        <div>
+          <div style="font-size:10px;color:var(--purple-light);font-weight:500;margin-bottom:3px;">VaultAI ✦</div>
+          <div class="msg-bot-bubble" id="bubble-${id}">${text}</div>
+          <div class="msg-time">VaultAI • ${time}</div>
+        </div>
+      </div>`;
+  }
+  msgs.scrollTop = msgs.scrollHeight;
+  return id;
+}
+
+function showTyping() {
+  const msgs = document.getElementById('chat-messages');
+  const id = 'typing-' + Date.now();
+  msgs.innerHTML += `
+    <div class="msg-bot" id="${id}">
+      <div style="width:28px;height:28px;background:linear-gradient(135deg,#7c5ff5,#3d9ef5);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <i class="ti ti-robot" style="font-size:13px;color:#fff;"></i>
+      </div>
+      <div class="msg-bot-bubble" style="color:var(--text3);display:flex;gap:4px;align-items:center;">
+        <span class="dot-pulse"></span><span class="dot-pulse" style="animation-delay:.2s"></span><span class="dot-pulse" style="animation-delay:.4s"></span>
+        <span style="font-size:11px;margin-left:4px;">VaultAI está analisando...</span>
+      </div>
+    </div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+  return id;
+}
+
+async function sendChatMsg() {
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  input.disabled = true;
+
+  addMsg(msg, true);
+  chatHistory.push({ role: 'user', content: msg });
+
+  const typingId = showTyping();
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        system: VAULT_AI_SYSTEM,
+        messages: chatHistory
+      })
+    });
+
+    const data = await response.json();
+    const reply = data.content?.[0]?.text || 'Desculpe, não consegui processar sua mensagem. Tente novamente.';
+
+    document.getElementById(typingId)?.remove();
+    addMsg(reply.replace(/\n/g, '<br>'), false);
+    chatHistory.push({ role: 'assistant', content: reply });
+
+    // Manter histórico em no máximo 20 mensagens
+    if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
+
+  } catch(e) {
+    document.getElementById(typingId)?.remove();
+    addMsg('Ops! Houve um erro de conexão. Tente novamente em instantes. 🔄', false);
+  }
+
+  input.disabled = false;
+  input.focus();
+}
+
+function quickReply(msg) {
+  document.getElementById('chat-input').value = msg;
+  sendChatMsg();
+}
+
+// Mostrar notificação após 3 segundos
+setTimeout(() => {
+  if (!chatOpen) document.getElementById('chat-notif').style.display = 'flex';
+}, 3000);
+
+// Preencher nome do usuário no chat
+function updateChatUsername() {
+  const el = document.getElementById('chat-username');
+  if (!el) return;
+  // Tenta pegar o nome do perfil visível na página
+  const profileName = document.querySelector('.sv-profile-name');
+  const navAvatar = document.querySelector('[style*="IK"]');
+  // Nome hardcoded do usuário logado — quando tiver login real, vem do Supabase
+  const nome = window.currentUser?.nome || 'Ikaro';
+  el.textContent = nome;
+}
+updateChatUsername();
+
+// ── CHAT AO VIVO ──
+
+// ══════════════════════════════════════════════
+// VAULTAI CONTEXTUAL — Acompanha o usuário
+// ══════════════════════════════════════════════
+
+const NOME = window.currentUser?.nome || 'Ikaro';
+
+const CONTEXTOS = {
+  home: {
+    icon: 'ti-home', label: 'Explorando o marketplace',
+    msg: `${NOME}, encontrei skins em alta agora 📈 A AK-47 Asiimov subiu 8% nos últimos 7 dias. Quer que eu monte um loadout personalizado?`,
+    btns: [
+      { txt: '🎨 Montar meu loadout', acao: 'Monte um loadout completo para mim com orçamento de $200' },
+      { txt: '📈 O que está valorizando?', acao: 'Quais skins estão valorizando agora?' },
+      { txt: '🔍 Buscar skin', acao: 'Quero buscar uma skin específica' }
+    ]
+  },
+  sell: {
+    icon: 'ti-tag', label: 'Listando skins para venda',
+    msg: `Posso te ajudar a precificar suas skins, ${NOME}! 💰 Selecione as skins e eu analiso se o preço está competitivo.`,
+    btns: [
+      { txt: '💡 Sugerir preço ideal', acao: 'Qual o melhor preço para minhas skins agora?' },
+      { txt: '🛡️ Como evitar golpes?', acao: 'Como me proteger de golpes ao vender?' }
+    ]
+  },
+  checkout: {
+    icon: 'ti-shield-check', label: 'Finalizando sua compra',
+    msg: `Estou aqui com você até o fim, ${NOME}! 🛡️ Vou acompanhar cada etapa do pagamento. Se travar em qualquer passo, é só me chamar.`,
+    btns: [
+      { txt: '💳 Dúvida no pagamento', acao: 'Estou com dúvida no pagamento' },
+      { txt: '⏱️ Quando chega a skin?', acao: 'Quanto tempo leva para receber a skin após o pagamento?' }
+    ]
+  },
+  dados: {
+    icon: 'ti-shield-lock', label: 'Gerenciando seus dados',
+    msg: `${NOME}, seus dados estão protegidos pela LGPD 🔒 Posso te explicar quais dados temos e como excluí-los.`,
+    btns: [
+      { txt: '📋 Quais dados vocês têm?', acao: 'Quais dados o SkinVault tem sobre mim?' },
+      { txt: '🗑️ Excluir minha conta', acao: 'Como faço para excluir minha conta?' }
+    ]
+  }
+};
+
+let proativoTimeout, proativoFechado = false, ultimaPagina = '';
+
+function mostrarProativo(pagina) {
+  if (chatOpen || proativoFechado) return;
+  const ctx = CONTEXTOS[pagina];
+  if (!ctx || pagina === ultimaPagina) return;
+  ultimaPagina = pagina;
+  clearTimeout(proativoTimeout);
+  proativoTimeout = setTimeout(() => {
+    const el = document.getElementById('vault-proativo');
+    if (!el) return;
+    document.getElementById('vault-proativo-msg').innerHTML = ctx.msg;
+    document.getElementById('vault-proativo-btns').innerHTML = ctx.btns.map(b =>
+      `<button onclick="proativoAcao('${b.acao.replace(/'/g,"\\'")}'"
+        style="background:#2a1f5a;border:0.5px solid #7c5ff5;color:#c4b0ff;font-size:11px;padding:5px 10px;border-radius:20px;cursor:pointer;white-space:nowrap;margin-bottom:4px;">
+        ${b.txt}
+      </button>`).join('');
+    el.style.display = 'block';
+    document.getElementById('chat-notif').style.display = 'flex';
+  }, 1800);
+}
+
+function fecharProativo() {
+  const el = document.getElementById('vault-proativo');
+  if (el) el.style.display = 'none';
+  proativoFechado = true;
+  setTimeout(() => { proativoFechado = false; }, 120000);
+}
+
+function proativoAcao(msg) {
+  fecharProativo();
+  if (!chatOpen) toggleChat();
+  setTimeout(() => {
+    document.getElementById('chat-input').value = msg;
+    sendChatMsg();
+  }, 400);
+}
+
+function atualizarContextoChat(pagina) {
+  const ctx = CONTEXTOS[pagina];
+  if (!ctx) return;
+  const icon = document.getElementById('ctx-icon');
+  const label = document.getElementById('ctx-label');
+  if (icon) { icon.className = `ti ${ctx.icon}`; icon.style.fontSize='14px'; icon.style.color='#7c5ff5'; }
+  if (label) label.textContent = ctx.label;
+}
+
+// Sobrescreve goPage para injetar lógica contextual
+const _goPageOriginal = goPage;
+goPage = function(id) {
+  _goPageOriginal(id);
+  proativoFechado = false;
+  ultimaPagina = '';
+  atualizarContextoChat(id);
+  mostrarProativo(id);
+  if (chatOpen && CONTEXTOS[id]) {
+    setTimeout(() => addMsg(`Mudei de página com você! Agora: <strong>${CONTEXTOS[id].label}</strong>. ${CONTEXTOS[id].msg}`, false), 500);
+  }
+};
+
+// Acompanha seleção de método de pagamento
+setTimeout(() => {
+  document.querySelectorAll('.method').forEach(el => {
+    el.addEventListener('click', () => {
+      if (chatOpen || proativoFechado) return;
+      const metodo = el.textContent.trim();
+      setTimeout(() => {
+        const pEl = document.getElementById('vault-proativo');
+        if (!pEl) return;
+        document.getElementById('vault-proativo-msg').innerHTML =
+          `Boa escolha! Vou te guiar no pagamento via <strong style="color:#c4b0ff;">${metodo}</strong>, ${NOME} 👇 Qualquer dúvida é só me chamar!`;
+        document.getElementById('vault-proativo-btns').innerHTML =
+          `<button onclick="proativoAcao('Tenho dúvida no pagamento via ${metodo}')"
+            style="background:#2a1f5a;border:0.5px solid #7c5ff5;color:#c4b0ff;font-size:11px;padding:5px 10px;border-radius:20px;cursor:pointer;">
+            ❓ Dúvida no ${metodo}
+          </button>`;
+        pEl.style.display = 'block';
+      }, 1000);
+    });
+  });
+  // Iniciar na home
+  mostrarProativo('home');
+}, 2000);
+
+// ══════════════════════════════════════════════
+renderSkins();
+renderInv();
+</script>
+</body>
