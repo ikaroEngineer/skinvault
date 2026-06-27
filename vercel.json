@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "index.html", "use": "@vercel/static" },
+    { "src": "imgs/**", "use": "@vercel/static" },
+    { "src": "*.png", "use": "@vercel/static" },
+    { "src": "*.jpg", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/imgs/(.*)", "dest": "/imgs/$1" },
+    { "src": "/(.*\.(png|jpg|svg))", "dest": "/$1" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}
